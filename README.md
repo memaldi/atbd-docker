@@ -6,3 +6,5 @@
 6- docker compose up
 7- Explicar donde está el conf de flume
 8- Explicar cómo ver el log de flume
+9 - Crear un topic en kafka
+8 - Crear index en elasticsearch

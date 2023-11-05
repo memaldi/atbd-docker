@@ -23,8 +23,6 @@ services:
          - 8088:8088
       env_file:
         - ./config
-      volumes:
-        - ./test.sh:/opt/test.sh
    nodemanager:
       image: apache/hadoop:3
       command: ["yarn", "nodemanager"]
@@ -34,4 +32,33 @@ services:
      build: ./flume
      volumes:
        - ./flume/flume.conf:/apache-flume-1.11.0-bin/flume.conf
+   kafka:
+    image: docker.io/bitnami/kafka:3.6
+    volumes:
+      - "kafka_data:/bitnami"
+    environment:
+      # KRaft settings
+      - KAFKA_CFG_NODE_ID=0
+      - KAFKA_CFG_PROCESS_ROLES=controller,broker
+      - KAFKA_CFG_CONTROLLER_QUORUM_VOTERS=0@kafka:9093
+      # Listeners
+      - KAFKA_CFG_LISTENERS=PLAINTEXT://:9092,CONTROLLER://:9093
+      - KAFKA_CFG_ADVERTISED_LISTENERS=PLAINTEXT://:9092
+      - KAFKA_CFG_LISTENER_SECURITY_PROTOCOL_MAP=CONTROLLER:PLAINTEXT,PLAINTEXT:PLAINTEXT
+      - KAFKA_CFG_CONTROLLER_LISTENER_NAMES=CONTROLLER
+      - KAFKA_CFG_INTER_BROKER_LISTENER_NAME=PLAINTEXT
+   nifi:
+     image: apache/nifi:1.23.2
+     ports:
+       - "8443:8443"
+     environment:
+       - SINGLE_USER_CREDENTIALS_USERNAME=admin
+       - SINGLE_USER_CREDENTIALS_PASSWORD=adminatbd2324
+   elasticsearch:
+     image: elasticsearch:8.10.2
+     environment:
+       - discovery.type=single-node
+volumes:
+  kafka_data:
+    driver: local
 

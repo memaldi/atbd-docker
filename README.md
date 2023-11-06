@@ -37,6 +37,14 @@ Desde dentro del directorio del repositorio, ejecutamos
 docker compose up
 ```
 
+# Detener el entorno
+
+Para detener el entorno, desde dentro del repositorio ejecutamos:
+
+```
+docker compose stop
+```
+
 # Interacción con las herramientas
 
 Para interactuar con las diferentes herramientas, tenemos que abrir una terminal dentro del repositorio.
@@ -48,6 +56,8 @@ Para interactuar con HDFS, podemos lanzar el siguiente comando. Por ejemplo, par
 ```
 docker compose exec -ti namenode hdfs dfs -ls /ecommerce
 ```
+
+Esta configuración de HDFS sólo tiene un inconveniente, y es que cada vez que reiniciamos el entorno, HDFS se elimina. Esto no debería ser un problema, ya que cada vez que lo reiniciamos, se empiezan a generar los eventos ecommerce desde el principio.
 
 ## Flume
 
